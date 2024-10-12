@@ -1,0 +1,12 @@
+/*
+Simple Tetris 
+on Windows
+*/
+
+#include<iostream>
+
+int main() {
+	std::cout << "hello world!\n";
+	return 0;
+}
+
