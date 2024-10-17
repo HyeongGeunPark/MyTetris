@@ -7,12 +7,13 @@ Tetris Game
 #define UNICODE
 #endif
 
+#define WIN32_LEAN_AND_MEAN 
 #include <windows.h> 
 
-// some internal global variables
-static LPCWSTR appName = L"Tetris";
-static constexpr int width = 500;
-static constexpr int height = 500;
+#include "Tetris.h"
+#include "MainWindow.h"
+#include "WinGDIDraw.h"
+ 
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 
@@ -23,46 +24,17 @@ int APIENTRY WinMain(
 	_In_ int nCmdShow
 )
 {
-	// define main window
-	WNDCLASS wc = { 0 };
-	wc.lpfnWndProc = WndProc;
-	wc.lpszClassName = appName;
-	wc.hInstance = hInstance;
-	// TODO: Is CS_OWNDC neccesary for efficienty?
-	wc.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
-	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
-	wc.hIcon = LoadIcon(NULL, IDI_APPLICATION);
-	// NOTE: Maybe Background is not neccesary...
-	wc.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
-	// no menu, no extra memory 
-
-	// register window
-	if (!RegisterClass(&wc)) {
-		// fail
-		OutputDebugString(L"WinMain: wndclass register fail");
-		return 0; 
-	}
-
-	// window create 
-	HWND hwnd = CreateWindow(
-		appName,
-		L"My Tetris App",
-		WS_SYSMENU | WS_CAPTION | WS_MINIMIZEBOX,	// window style
-		CW_USEDEFAULT, CW_USEDEFAULT,	// initial position
-		width, height,
-		NULL,
-		NULL,
-		hInstance,
-		NULL
-	);
-	if (!hwnd) {
-		OutputDebugString(L"WinMain: CreateWindow failed");
+	// create main window
+	MainWindow mainWindow(hInstance, nCmdShow);
+	if (!mainWindow.Init(WndProc)) {
+		OutputDebugString(L"WinMain: mainWindow::Init() failed");
 		return 0;
-	}
-
+	} 
+	HWND hwnd = mainWindow.gethWnd();
+ 
 	ShowWindow(hwnd, nCmdShow);
 	UpdateWindow(hwnd);
-
+ 
 	// default message loop
 	MSG msg;
 	while (GetMessage(&msg, NULL, 0, 0)) {
@@ -70,13 +42,51 @@ int APIENTRY WinMain(
 		DispatchMessage(&msg);
 	}
 
-
 	// process exit
+	mainWindow.DeInit();
 	return 0;
 } 
 
+// delegates windows message to Tetris object
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {
+	static WinGDIDraw di{ hwnd };
+	static Tetris tetris{ &di };
+	switch (msg) {
+	case WM_CREATE: {
+		di.windowInit();
+	} return 0;
+
+
+	case WM_KEYDOWN: {
+		Tetris::Keycode keycode;
+		switch (wparam) {
+		case VK_UP:
+			keycode = Tetris::Keycode::KEYUP;
+			break;
+		case VK_DOWN:
+			keycode = Tetris::Keycode::KEYDOWN;
+			break;
+		case VK_RIGHT:
+			keycode = Tetris::Keycode::KEYRIGHT;
+			break;
+		case VK_LEFT:
+			keycode = Tetris::Keycode::KEYLEFT;
+			break;
+		case VK_ESCAPE:
+			keycode = Tetris::Keycode::KEYESC;
+			break;
+		default:
+			return 0;
+		}
+		tetris.OnKeyEvent(keycode);
+	} return 0;
+
+
+	case WM_PAINT: 
+		tetris.ReDraw();
+		return 0;
+	}
 
 	return DefWindowProc(hwnd, msg, wparam, lparam);
 }
