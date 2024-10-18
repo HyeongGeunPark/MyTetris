@@ -1,5 +1,5 @@
 /*
-Tetris Game
+Game Game
 */
 
 // force unicode
@@ -10,7 +10,7 @@ Tetris Game
 #define WIN32_LEAN_AND_MEAN 
 #include <windows.h> 
 
-#include "Tetris.h"
+#include "Game.h"
 #include "MainWindow.h"
 #include "WinGDIDraw.h"
  
@@ -47,11 +47,11 @@ int APIENTRY WinMain(
 	return 0;
 } 
 
-// delegates windows message to Tetris object
+// delegates windows message to Game object
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {
 	static WinGDIDraw di{ hwnd };
-	static Tetris tetris{ &di };
+	static Game tetris{ &di };
 	switch (msg) {
 	case WM_CREATE: {
 		di.windowInit();
@@ -59,22 +59,22 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 
 
 	case WM_KEYDOWN: {
-		Tetris::Keycode keycode;
+		Game::Keycode keycode;
 		switch (wparam) {
 		case VK_UP:
-			keycode = Tetris::Keycode::KEYUP;
+			keycode = Game::Keycode::KEYUP;
 			break;
 		case VK_DOWN:
-			keycode = Tetris::Keycode::KEYDOWN;
+			keycode = Game::Keycode::KEYDOWN;
 			break;
 		case VK_RIGHT:
-			keycode = Tetris::Keycode::KEYRIGHT;
+			keycode = Game::Keycode::KEYRIGHT;
 			break;
 		case VK_LEFT:
-			keycode = Tetris::Keycode::KEYLEFT;
+			keycode = Game::Keycode::KEYLEFT;
 			break;
 		case VK_ESCAPE:
-			keycode = Tetris::Keycode::KEYESC;
+			keycode = Game::Keycode::KEYESC;
 			break;
 		default:
 			return 0;

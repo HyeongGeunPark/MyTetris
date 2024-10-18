@@ -24,6 +24,7 @@
     <ProjectGuid>{493eebca-23ba-4443-905d-3d50a0cd117a}</ProjectGuid>
     <RootNamespace>MyTetris</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>MyGame</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -135,7 +136,7 @@
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\MainWindow.cpp" />
-    <ClCompile Include="src\Tetris.cpp" />
+    <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\WinGDIDraw.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -144,7 +145,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\MainWindow.h" />
-    <ClInclude Include="src\Tetris.h" />
+    <ClInclude Include="src\Game.h" />
     <ClInclude Include="src\WinGDIDraw.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -24,7 +24,7 @@
     <ClCompile Include="src\WinGDIDraw.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="src\Tetris.cpp">
+    <ClCompile Include="src\Game.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -33,7 +33,7 @@
     <None Include="note.md" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Tetris.h">
+    <ClInclude Include="src\Game.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="src\MainWindow.h">

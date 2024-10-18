@@ -28,8 +28,8 @@ bool MainWindow::Init(WNDPROC WndProc) {
 		windowName,
 		WS_SYSMENU | WS_CAPTION | WS_MINIMIZEBOX,	// window style
 		CW_USEDEFAULT, CW_USEDEFAULT,	// initial position
-		//CW_USEDEFAULT, CW_USEDEFAULT,	// use default size now. updated later
-		500,500,
+		CW_USEDEFAULT, CW_USEDEFAULT,	// use default size now. updated later
+		//500,500,
 		NULL,
 		NULL,
 		hInstance,
