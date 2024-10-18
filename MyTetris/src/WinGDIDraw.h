@@ -5,25 +5,18 @@
 #include <string>
 #include <windowsx.h>
 #include "Game.h"
-
-// simple wrapper for DC
-class myDC {
-public:
-	myDC(HWND hwnd) : hwnd{ hwnd }, dc { GetDC(hwnd) } {}
-	~myDC() { ReleaseDC(hwnd, dc); }
-	HDC dc;
-
-private:
-	HWND hwnd;
-};
-
+ 
 // this class knows everything about graphics
 class WinGDIDraw : public DrawInterface {
 public:
-	WinGDIDraw(HWND hwnd) : hwnd{ hwnd } {}
+	WinGDIDraw(HWND hwnd)
+		:hwnd{ hwnd }
+	{ }
 	~WinGDIDraw() {
 		for (HBRUSH brush : colorBrushes)
 			DeleteObject(brush);
+		DeInitBackBuffer();
+		ReleaseDC(hwnd, winDC);
 	}
  
 	void drawBoard(Game::Board& board) override;
@@ -31,11 +24,23 @@ public:
 	void drawStartPage() override;
 	void drawEndPage() override;
 	void drawBackground() override;
-	void windowInit() { ResizeClientArea(width, height); }
+
+	// post-construct initializations
+	void windowInit(); 
+
+	// BLT from back buffer
+	void reDraw();
 
 private:
 	HWND hwnd;	// handle to the main window
 	std::wstring wstr;
+
+	// back buffer related members
+	HDC winDC;
+	HDC memDC;
+	HBITMAP backBuffer; 
+	void InitBackBuffer();
+	void DeInitBackBuffer();
 
 	// dimensions & string constants
 	const int block_size = 30;
@@ -60,8 +65,6 @@ private:
 
 	// write text
 	void writeText(int x, int y, int width, int height, std::string str);
-	// draw rectangle
-	void Rect(int x, int y, int width, int height, int color); 
 
 	void ResizeClientArea(int newClientWidth, int newClientHeight);
 

@@ -7,7 +7,6 @@
 /*
 TODO:
 1. timer handler
-2. keyboard handler
 */
 void Game::OnTimerEvent() {}
 void Game::OnKeyEvent(Keycode keycode) {
