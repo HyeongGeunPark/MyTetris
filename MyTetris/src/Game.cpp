@@ -72,8 +72,8 @@ void Game::ReDraw() {
 vec2 Game::CreateTarget() {
 	static std::random_device rnd;
 	static std::default_random_engine rng{ rnd()};
-	static std::uniform_int_distribution x_dist{ 0, board_x-1 };
-	static std::uniform_int_distribution y_dist{ 0, board_y-1 };
+	static std::uniform_int_distribution<int> x_dist{ 0, board_x-1 };
+	static std::uniform_int_distribution<int> y_dist{ 0, board_y-1 };
 	vec2 newTarget;
 	do {
 		newTarget.x = x_dist(rng);

@@ -88,8 +88,16 @@ void WinGDIDraw::DeInitBackBuffer() {
 void WinGDIDraw::reDraw() {
 	PAINTSTRUCT ps;
 	HDC dc = BeginPaint(hwnd, &ps);
+	RECT& rect = ps.rcPaint;
+	int rcWidth = rect.right - rect.left;
+	int rcHeight = rect.bottom - rect.top;
 	// BLIT required(invalidated) parts from back buffer to client dc
-	BitBlt(dc, 0, 0, width, height, memDC, 0, 0, SRCCOPY);
+	BitBlt(dc,	// destination DC
+		rect.left, rect.top, rcWidth, rcHeight,	// destination origin and size
+		memDC,	// source DC(DC handle to memory DDB)
+		rect.left, rect.top,	// source origin
+		SRCCOPY	// blt mode
+	);
 	EndPaint(hwnd, &ps);
 }
 

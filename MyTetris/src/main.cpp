@@ -51,11 +51,11 @@ int APIENTRY WinMain(
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {
 	static WinGDIDraw di{ hwnd };
-	static Game tetris{ &di };
+	static Game game{ &di };
 	switch (msg) {
 	case WM_CREATE: {
 		di.windowInit();
-		tetris.Init();
+		game.Init();
 	} return 0;
 
 
@@ -80,7 +80,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 		default:
 			return 0;
 		}
-		tetris.OnKeyEvent(keycode);
+		game.OnKeyEvent(keycode);
 	} return 0;
 
 
